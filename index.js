@@ -1,3 +1,5 @@
+var traj = require('voxel-trajectory');
+
 module.exports = function(opts) {
   opts = opts || {};
   if (opts.THREE) opts = {game:opts};
@@ -28,11 +30,7 @@ module.exports = function(opts) {
       ),
       width: game.cubeSize, height: game.cubeSize, depth: game.cubeSize,
       collisionRadius: game.cubeSize,
-      velocity: {
-        x: (v * Math.sin(xy.x) * Math.sin(xy.y)),
-        y: (v * Math.cos(xy.x)),
-        z: (v * Math.sin(xy.x) * Math.cos(xy.y))
-      },
+      velocity: traj(v, xy),
       resting: false
     };
     item.mesh.position.copy(game.controls.yawObject.position);

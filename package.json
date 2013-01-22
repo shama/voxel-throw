@@ -29,6 +29,7 @@
     "gh-pages": "cp -R ./example/* ./ && browserify world.js -o world.js"
   },
   "dependencies": {
+    "voxel-trajectory": "~0.1.0"
   },
   "devDependencies": {
     "voxel-engine": "~0.3.2",
