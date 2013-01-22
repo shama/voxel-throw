@@ -16,6 +16,28 @@ window.addEventListener('mouseup', function() {
 }, false);
 ```
 
+Or if you just want to throw your own item, like a rock:
+
+```js
+var throwthis = require('voxel-throw')(game);
+
+var rock = {
+  mesh: new game.THREE.Mesh(
+    new game.THREE.CubeGeometry(4, 4, 4),
+    new game.THREE.MeshBasicMaterial({color:0x333333})
+  ),
+  size: 4,
+  collisionRadius: 4,
+  resting: false
+};
+
+window.addEventListener('mouseup', function() {
+  throwthis(rock);
+}, false);
+```
+
+
+
 # install
 
 With [npm](https://npmjs.org) do:
@@ -27,6 +49,7 @@ npm install voxel-throw
 Use [browserify](http://browserify.org) to `require('voxel-throw')`.
 
 ## release history
+* 0.1.1 - ability to override the item thrown
 * 0.1.0 - initial release
 
 ## license

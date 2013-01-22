@@ -1,7 +1,7 @@
 {
   "name": "voxel-throw",
   "description": "Pick up and throw voxels in voxel.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/shama/voxel-throw",
   "author": {
     "name": "Kyle Robinson Young",
