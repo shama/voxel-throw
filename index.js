@@ -8,10 +8,11 @@ module.exports = function(opts) {
   var time = opts.time || 15000;
 
   function item(type) {
+    console.log("Type of material: ", type)
     var container = new game.THREE.Object3D()
     var mesh = new game.THREE.Mesh(
         new game.THREE.CubeGeometry(game.cubeSize, game.cubeSize, game.cubeSize),
-        new game.THREE.MeshFaceMaterial(game.materials.get(1))
+        new game.THREE.MeshFaceMaterial(game.materials.get(type))
     );
     var item = game.makePhysical(container, new game.THREE.Vector3(game.cubeSize, game.cubeSize, game.cubeSize))
     container.add(mesh)
@@ -20,7 +21,6 @@ module.exports = function(opts) {
     mesh.translateX(game.cubeSize / 2)
     mesh.translateZ(game.cubeSize / 2)
     item.subjectTo(new game.THREE.Vector3(0, -9.8/100000, 0))
-    game.scene.add(container);
 
     return item;
   }
@@ -31,7 +31,7 @@ module.exports = function(opts) {
     var type = game.getBlock(block);
     if (type === 0) return;
     game.setBlock(block, 0);
-    return has = item(type);
+    return has = item(type - 1);
   }
 
   function throwit(v, xy) {
