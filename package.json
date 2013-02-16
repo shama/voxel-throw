@@ -41,5 +41,13 @@
     "voxel",
     "throw",
     "pickup"
-  ]
+  ],
+  "readme": "# voxel-throw\n\n> Pick up and throw voxels in [voxel.js](https://github.com/maxogden/voxel-engine).\n\n[View this example](http://shama.github.com/voxel-throw)\n\n# example\n\n``` js\n// create a throwing thing and give it a copy of the game\nvar pickupOrThrow = require('voxel-throw')(game);\n\n// on mouse down either pick up or throw a voxel\nwindow.addEventListener('mouseup', function() {\n  pickupOrThrow(/* velocity, {x: angle, y: angle} */);\n}, false);\n```\n\nOr if you just want to throw your own item, like a rock:\n\n```js\nvar throwthis = require('voxel-throw')(game);\n\nvar rock = {\n  mesh: new game.THREE.Mesh(\n    new game.THREE.CubeGeometry(4, 4, 4),\n    new game.THREE.MeshBasicMaterial({color:0x333333})\n  ),\n  size: 4,\n  collisionRadius: 4,\n  resting: false\n};\n\nwindow.addEventListener('mouseup', function() {\n  throwthis(rock);\n}, false);\n```\n\n\n\n# install\n\nWith [npm](https://npmjs.org) do:\n\n```\nnpm install voxel-throw\n```\n\nUse [browserify](http://browserify.org) to `require('voxel-throw')`.\n\n## release history\n* 0.1.1 - ability to override the item thrown\n* 0.1.0 - initial release\n\n## license\nCopyright (c) 2013 Kyle Robinson Young<br/>\nLicensed under the MIT license.\n",
+  "readmeFilename": "README.md",
+  "_id": "voxel-throw@0.1.1",
+  "dist": {
+    "shasum": "b270704e25f00362cd036922190e99cde5096d4b"
+  },
+  "_from": "voxel-throw@",
+  "_resolved": "https://registry.npmjs.org/voxel-throw/-/voxel-throw-0.1.1.tgz"
 }

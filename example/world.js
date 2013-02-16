@@ -1,5 +1,6 @@
 var createEngine = require('voxel-engine');
 var createTerrain = require('voxel-perlin-terrain');
+var player = require('voxel-player')
 
 // create the game
 var game = createEngine({
@@ -12,16 +13,22 @@ var game = createEngine({
     'plank'
   ],
   texturePath: './textures/',
-  startingPosition: [35, -1200, 35],
+  controls: { discreteFire: true },
   worldOrigin: [0,0,0],
 });
 var hasLock = false;
 var container = document.getElementById('container');
 game.appendTo(container);
-container.addEventListener('click', function() {
-  game.requestPointerLock(container);
-  hasLock = true;
-});
+
+// Add game to the window, for debugging purposes
+window.game = game;
+
+// create the player from a minecraft skin file and tell the
+// game to use it as the main player
+var createPlayer = player(game)
+var substack = createPlayer('substack.png')
+substack.yaw.position.set(0, -1200, 0)
+substack.possess()
 
 // add some trees
 var createTree = require('voxel-forest');
@@ -33,6 +40,6 @@ for (var i = 0; i < 20; i++) {
 var pickupOrThrow = require('../')(game);
 
 // pick up or throw voxel
-window.addEventListener('mouseup', function() {
+game.on('fire', function(target) {
   pickupOrThrow();
-}, false);
+});
