@@ -36,8 +36,6 @@ window.addEventListener('mouseup', function() {
 }, false);
 ```
 
-
-
 # install
 
 With [npm](https://npmjs.org) do:
@@ -49,6 +47,7 @@ npm install voxel-throw
 Use [browserify](http://browserify.org) to `require('voxel-throw')`.
 
 ## release history
+* 0.2.0 - Updates for voxel-engine@0.10.0 (thanks @HowlingEverett!)
 * 0.1.1 - ability to override the item thrown
 * 0.1.0 - initial release
 

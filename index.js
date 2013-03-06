@@ -7,49 +7,44 @@ module.exports = function(opts) {
   var has  = opts.has || false;
   var time = opts.time || 15000;
 
-  function item(type) {
-    console.log("Type of material: ", type)
-    var container = new game.THREE.Object3D()
-    var mesh = new game.THREE.Mesh(
-        new game.THREE.CubeGeometry(game.cubeSize, game.cubeSize, game.cubeSize),
-        new game.THREE.MeshFaceMaterial(game.materials.get(type))
-    );
-    var item = game.makePhysical(container, new game.THREE.Vector3(game.cubeSize, game.cubeSize, game.cubeSize))
-    container.add(mesh)
-    item.mesh = container;
-    mesh.translateY(game.cubeSize / 2)
-    mesh.translateX(game.cubeSize / 2)
-    mesh.translateZ(game.cubeSize / 2)
-    item.subjectTo(new game.THREE.Vector3(0, -9.8/100000, 0))
-
-    return item;
-  }
-
   function pickup() {
-    var block = game.raycast(game.cameraPosition(), game.cameraVector(), 100);
+    var block = game.raycast(game.cameraPosition(), game.cameraVector(), 10);
     if (!block) return;
-    var type = game.getBlock(block);
+    var type = game.getBlock(block.position);
     if (type === 0) return;
-    game.setBlock(block, 0);
-    return has = item(type - 1);
+    game.setBlock(block.position, 0);
+    return has = type;
   }
 
   function throwit(v, xy) {
-    v = v / 10 || 1.0;
+    v = v / 10 || 0.1;
+    var target = game.controls.target();
+
     if (!xy) {
-      var target = game.controls.target();
       xy = {
         x: target.pitch.rotation.x,
-        y: target.yaw.rotation.y
+        y: target.yaw.rotation.y,
       };
       xy.x -= Math.PI / 2;
     }
 
-    has.mesh.position.copy(game.controls.target().yaw.position);
-    has.mesh.translateY(game.cubeSize);
-    has.velocity = traj(v, xy);
-    game.addItem(has);
-    setTimeout(function(has) { game.removeItem(has); }, time, has);
+    var size = game.cubeSize || 1;
+    var container = new game.THREE.Object3D();
+    var mesh = new game.THREE.Mesh(
+      new game.THREE.CubeGeometry(size, size, size),
+      new game.THREE.MeshFaceMaterial(game.materials.get(has - 1))
+    );
+    container.add(mesh);
+    mesh.position.set(size / 2, size / 2, size / 2);
+    container.position.copy(target.yaw.position);
+
+    game.addItem({
+      mesh: container,
+      size: size,
+      velocity: traj(v, xy),
+    });
+    var item = game.items[game.items.length - 1];
+    setTimeout(function(item) { game.removeItem(item); }, time, item);
     has = false;
     return true;
   }
