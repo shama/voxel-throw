@@ -8,38 +8,44 @@ module.exports = function(opts) {
   var time = opts.time || 15000;
 
   function item(type) {
-    var item = {
-      mesh: new game.THREE.Mesh(
+    console.log("Type of material: ", type)
+    var container = new game.THREE.Object3D()
+    var mesh = new game.THREE.Mesh(
         new game.THREE.CubeGeometry(game.cubeSize, game.cubeSize, game.cubeSize),
-        game.material
-      ),
-      width: game.cubeSize, height: game.cubeSize, depth: game.cubeSize,
-      collisionRadius: game.cubeSize,
-      velocity: {x:0, y:0, z:0},
-      resting: false
-    };
-    item.mesh.geometry.faces.forEach(function(face, i) {
-      face.materialIndex = ((type - 1) * 6) + i;
-    });
+        new game.THREE.MeshFaceMaterial(game.materials.get(type))
+    );
+    var item = game.makePhysical(container, new game.THREE.Vector3(game.cubeSize, game.cubeSize, game.cubeSize))
+    container.add(mesh)
+    item.mesh = container;
+    mesh.translateY(game.cubeSize / 2)
+    mesh.translateX(game.cubeSize / 2)
+    mesh.translateZ(game.cubeSize / 2)
+    item.subjectTo(new game.THREE.Vector3(0, -9.8/100000, 0))
+
     return item;
   }
 
   function pickup() {
-    var block = game.raycast();
+    var block = game.raycast(game.cameraPosition(), game.cameraVector(), 100);
     if (!block) return;
     var type = game.getBlock(block);
     if (type === 0) return;
     game.setBlock(block, 0);
-    return has = item(type);
+    return has = item(type - 1);
   }
 
   function throwit(v, xy) {
-    v = v / 10 || 0.3;
+    v = v / 10 || 1.0;
     if (!xy) {
-      xy = game.cameraRotation();
+      var target = game.controls.target();
+      xy = {
+        x: target.pitch.rotation.x,
+        y: target.yaw.rotation.y
+      };
       xy.x -= Math.PI / 2;
     }
-    has.mesh.position.copy(game.controls.yawObject.position);
+
+    has.mesh.position.copy(game.controls.target().yaw.position);
     has.mesh.translateY(game.cubeSize);
     has.velocity = traj(v, xy);
     game.addItem(has);
@@ -49,7 +55,6 @@ module.exports = function(opts) {
   }
 
   return function(v) {
-    if (!game.controls.enabled) return;
     if (typeof v === 'object') has = clone(v);
     return has === false ? pickup(v) : throwit(v);
   }
