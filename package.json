@@ -29,18 +29,18 @@
     "gh-pages": "cp -R ./example/* ./ && browserify world.js -o world.js"
   },
   "dependencies": {
-    "voxel-trajectory": "~0.1.0"
+    "voxel-trajectory": ">=0.1.0"
   },
   "devDependencies": {
-    "voxel-engine": "~0.10.0",
+    "voxel-engine": ">=0.10.0",
     "voxel-perlin-terrain": "0.0.5",
     "voxel-forest": "0.0.0",
     "browservefy": "0.0.8",
-    "voxel-player": "~0.1.0"
+    "voxel-player": ">=0.1.0"
   },
   "peerDependencies": {
-    "voxel-engine": "~0.10.0",
-    "voxel-player": "~0.1.0"
+    "voxel-engine": ">=0.10.0",
+    "voxel-player": ">=0.1.0"
   },
   "keywords": [
     "voxel",
